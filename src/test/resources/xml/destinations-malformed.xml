@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- malformed xml for testing purposes -->
+<destinations>
+    <destination atlas_id="1" asset_id="1" title="Africa" title-ascii="Africa">
