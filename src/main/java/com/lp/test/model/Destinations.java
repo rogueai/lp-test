@@ -12,7 +12,7 @@ import java.util.List;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Destinations {
+public class Destinations implements Element {
 
     @XmlElement(name = "destination")
     private List<Destination> destinations = new ArrayList<>();

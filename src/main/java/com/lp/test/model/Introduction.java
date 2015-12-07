@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @author Massimo Zugno <d3k41n@gmail.com>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class introduction {
+public class Introduction implements Element{
 
-    String overview = new String();
+    protected String overview;
 
     public String getOverview() {
         return overview;

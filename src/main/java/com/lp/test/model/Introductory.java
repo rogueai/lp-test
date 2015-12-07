@@ -9,13 +9,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Introductory implements Element {
 
-    private com.lp.test.model.introduction introduction;
+    private Introduction introduction;
 
-    public com.lp.test.model.introduction getIntroduction() {
+    public Introduction getIntroduction() {
         return introduction;
     }
 
-    public void setIntroduction(com.lp.test.model.introduction introduction) {
+    public void setIntroduction(Introduction introduction) {
         this.introduction = introduction;
     }
 }
