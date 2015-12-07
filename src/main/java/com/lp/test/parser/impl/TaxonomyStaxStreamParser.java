@@ -4,9 +4,6 @@ import com.lp.test.model.Node;
 import com.lp.test.parser.exception.ParseException;
 import org.apache.commons.lang.StringUtils;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -43,8 +40,9 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
 
     @Override
     protected void handleStartElement(XMLStreamReader reader) throws ParseException {
-        String name = reader.getLocalName().toLowerCase();
+        String name = reader.getLocalName();
         if (name != null) {
+            name = name.toLowerCase();
             switch (name) {
                 case ELEMENT__TAXONOMY:
                     createNode(ROOT_NODE_ID);
@@ -85,10 +83,11 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
     }
 
     /**
-     * Read CHARACTERS events from the reader, until it reaches the next END_ELEMENT tag.
+     * Read CHARACTERS events from the reader, until it reaches the next END_ELEMENT tag. Any element other than CHARACTERS
+     * is skipped, such as: COMMENT, SPACE.
      *
-     * @param reader
-     * @return
+     * @param reader The stream reader.
+     * @return A String representing text element's text
      */
     private String parseNodeText(XMLStreamReader reader) {
         try {
@@ -107,7 +106,7 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
         return "";
     }
 
-    private Node createNode(int nodeId) {
+    private void createNode(int nodeId) {
         Node node = new Node();
         node.setId(nodeId);
         // set parent relationship and push the node to the stack
@@ -117,7 +116,6 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
             lookup.put(nodeId, node);
         }
         stack.push(node);
-        return node;
     }
 
 }

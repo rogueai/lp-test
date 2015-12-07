@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Massimo Zugno <d3k41n@gmail.com>
  */
-public abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> {
+abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> {
 
 
     protected Map<Integer, T> lookup = new HashMap<>();
@@ -31,9 +31,9 @@ public abstract class AbstractStaxStreamParser<T extends Element> implements Par
      * <p/>
      * Note that the InputStream is closed after parsing.
      *
-     * @param inputStream
+     * @param inputStream The InputStream to parse.
      * @return
-     * @throws XMLStreamException
+     * @throws ParseException
      */
     @Override
     public Map<Integer, T> parse(InputStream inputStream) throws ParseException {
@@ -63,9 +63,11 @@ public abstract class AbstractStaxStreamParser<T extends Element> implements Par
             throw new ParseException(e.getMessage(), e);
         } finally {
             try {
-                reader.close();
+                if (reader != null) {
+                    reader.close();
+                }
             } catch (XMLStreamException e) {
-                throw new ParseException(e.getMessage(), e);
+                e.printStackTrace();
             }
             IOUtils.closeQuietly(inputStream);
         }

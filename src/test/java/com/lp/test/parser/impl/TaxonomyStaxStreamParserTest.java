@@ -1,25 +1,12 @@
 package com.lp.test.parser.impl;
 
-import com.lp.test.model.Destination;
-import com.lp.test.model.Destinations;
-import com.lp.test.model.Introductory;
 import com.lp.test.model.Node;
-import com.lp.test.model.Taxonomies;
-import com.lp.test.model.Taxonomy;
-import com.sun.xml.internal.bind.marshaller.CharacterEscapeHandler;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -42,7 +29,7 @@ public class TaxonomyStaxStreamParserTest {
         Assert.assertEquals(1, result.size());
         Assert.assertTrue(result.containsKey(355064));
         Node node = result.get(355064);
-        Assert.assertEquals(355064l, node.getId());
+        Assert.assertEquals(355064, node.getId());
         Assert.assertEquals("Africa", node.getName());
     }
 

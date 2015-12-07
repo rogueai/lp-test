@@ -10,14 +10,12 @@ import com.lp.test.parser.exception.ParseException;
 import com.lp.test.parser.impl.DestinationStaxStreamParser;
 import com.lp.test.parser.impl.TaxonomyStaxStreamParser;
 import org.apache.commons.io.FileUtils;
-import org.apache.velocity.runtime.directive.Parse;
 
-import javax.xml.stream.XMLStreamException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -105,13 +103,18 @@ public class BatchProcessor {
 
     private void initOutputFolder(String outputFolder) {
         // create the target folder structure and copy the css
-        Paths.get(outputFolder).toFile().mkdirs();
         try {
-            URL url = LpTestCli.class.getResource("/templates/html/static/all.css");
-            Path source = Paths.get(url.toURI());
-            Path target = Paths.get(outputFolder + "/static/all.css");
-            FileUtils.copyFile(source.toFile(), target.toFile());
-        } catch (IOException | URISyntaxException e) {
+            File outputFile = Paths.get(outputFolder).toFile();
+            outputFile.mkdirs();
+            if (outputFile.exists()) {
+                URL url = LpTestCli.class.getResource("/templates/html/static/all.css");
+                Path source = Paths.get(url.toURI());
+                Path target = Paths.get(outputFolder + "/static/all.css");
+                FileUtils.copyFile(source.toFile(), target.toFile());
+            } else {
+                throw new IOException("Cannot create output folder.");
+            }
+        } catch (Exception e) {
             Util.printf("Cannot initialize output folder: %s", e.getMessage());
             System.exit(0);
         }

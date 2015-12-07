@@ -3,7 +3,6 @@ package com.lp.test.parser;
 import com.lp.test.model.Element;
 import com.lp.test.parser.exception.ParseException;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ public interface Parser<T extends Element> {
     /**
      * Parse the provided {@link InputStream} and returns a lookup table.
      *
-     * @param inputStream
+     * @param inputStream The InputStream to parse.
      * @return
      * @throws ParseException
      */

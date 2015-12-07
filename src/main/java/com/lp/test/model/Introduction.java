@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Introduction implements Element{
 
-    protected String overview;
+    private String overview;
 
     public String getOverview() {
         return overview;

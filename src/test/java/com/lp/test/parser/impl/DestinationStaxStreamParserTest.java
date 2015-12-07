@@ -56,7 +56,7 @@ public class DestinationStaxStreamParserTest {
         Assert.assertEquals(1, result.size());
         Assert.assertTrue(result.containsKey(355064));
         Destination destination = result.get(355064);
-        Assert.assertEquals(355064l, destination.getId());
+        Assert.assertEquals(355064, destination.getId());
         Assert.assertEquals("Africa", destination.getTitle());
         Assert.assertNotNull(destination.getIntroductory());
         Assert.assertNotNull(destination.getIntroductory().getIntroduction());

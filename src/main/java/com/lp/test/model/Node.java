@@ -24,7 +24,7 @@ public class Node implements Element {
     private Node parent;
 
     @XmlElement(name = "node")
-    private List<Node> children = new ArrayList<Node>();
+    private List<Node> children = new ArrayList<>();
 
     public List<Node> getChildren() {
         return children;

@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class HtmlGenerator implements Generator {
 
-    private String outputFolder;
+    private final String outputFolder;
 
     private Template template;
 
