@@ -2,6 +2,7 @@ package com.lp.test.parser.impl;
 
 import com.lp.test.model.Element;
 import com.lp.test.parser.Parser;
+import com.lp.test.parser.exception.ParseException;
 import org.apache.commons.io.IOUtils;
 
 import javax.xml.stream.XMLInputFactory;
@@ -25,30 +26,49 @@ public abstract class AbstractStaxStreamParser<T extends Element> implements Par
 
     protected Map<Integer, T> lookup = new HashMap<>();
 
+    /**
+     * Parse the provided {@link InputStream}.
+     * <p/>
+     * Note that the InputStream is closed after parsing.
+     *
+     * @param inputStream
+     * @return
+     * @throws XMLStreamException
+     */
     @Override
-    public Map<Integer, T> parse(InputStream inputStream) throws XMLStreamException {
+    public Map<Integer, T> parse(InputStream inputStream) throws ParseException {
 
         initParser();
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader reader = inputFactory.createXMLStreamReader(inputStream);
+        XMLStreamReader reader = null;
 
-        while (reader.hasNext()) {
-            int event = reader.next();
+        try {
+            reader = inputFactory.createXMLStreamReader(inputStream);
+            while (reader.hasNext()) {
+                int event = reader.next();
 
-            switch (event) {
-                case XMLStreamConstants.START_ELEMENT:
-                    handleStartElement(reader);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    handleEndElement(reader);
-                    break;
-                default:
-                    break;
+                switch (event) {
+                    case XMLStreamConstants.START_ELEMENT:
+                        handleStartElement(reader);
+                        break;
+                    case XMLStreamConstants.END_ELEMENT:
+                        handleEndElement(reader);
+                        break;
+                    default:
+                        break;
+                }
             }
+        } catch (Exception e) {
+            throw new ParseException(e.getMessage(), e);
+        } finally {
+            try {
+                reader.close();
+            } catch (XMLStreamException e) {
+                throw new ParseException(e.getMessage(), e);
+            }
+            IOUtils.closeQuietly(inputStream);
         }
-        IOUtils.closeQuietly(inputStream);
-        reader.close();
         return lookup;
     }
 
@@ -60,7 +80,7 @@ public abstract class AbstractStaxStreamParser<T extends Element> implements Par
         }
     }
 
-    protected abstract void handleEndElement(XMLStreamReader reader) throws XMLStreamException;
+    protected abstract void handleEndElement(XMLStreamReader reader) throws ParseException;
 
-    protected abstract void handleStartElement(XMLStreamReader reader) throws XMLStreamException;
+    protected abstract void handleStartElement(XMLStreamReader reader) throws ParseException;
 }

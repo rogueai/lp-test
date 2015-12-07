@@ -1,6 +1,7 @@
 package com.lp.test.parser;
 
 import com.lp.test.model.Element;
+import com.lp.test.parser.exception.ParseException;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
@@ -18,8 +19,8 @@ public interface Parser<T extends Element> {
      *
      * @param inputStream
      * @return
-     * @throws XMLStreamException
+     * @throws ParseException
      */
-    Map<Integer, T> parse(InputStream inputStream) throws XMLStreamException;
+    Map<Integer, T> parse(InputStream inputStream) throws ParseException;
 
 }

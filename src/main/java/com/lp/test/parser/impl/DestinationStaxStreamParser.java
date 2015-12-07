@@ -1,13 +1,12 @@
 package com.lp.test.parser.impl;
 
 import com.lp.test.model.Destination;
+import com.lp.test.parser.exception.ParseException;
 
-import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /**
@@ -22,26 +21,26 @@ public class DestinationStaxStreamParser extends AbstractStaxStreamParser<Destin
     private Unmarshaller unmarshaller;
 
     @Override
-    protected void handleStartElement(XMLStreamReader reader) throws XMLStreamException {
+    protected void handleStartElement(XMLStreamReader reader) throws ParseException {
         // JAXB moves the cursor to the next event after the END_ELEMENT tag. if it's another start
         // element, we have to try to unmarshall again since it could be another Destination
         while (isDestinationStartElement(reader)) {
-            parseDestination(reader);
+            try {
+                parseDestination(reader);
+            } catch (JAXBException e) {
+                throw new ParseException(e.getMessage(), e);
+            }
         }
     }
 
-    private void parseDestination(XMLStreamReader reader) {
-        try {
-            // use JAXB to unmarshall the destination object,
-            Unmarshaller unmarshaller = createUnmarshaller();
-            if (unmarshaller != null) {
-                Destination destination = unmarshaller.unmarshal(reader, Destination.class).getValue();
-                if (destination != null) {
-                    lookup.put(destination.getId(), destination);
-                }
+    private void parseDestination(XMLStreamReader reader) throws JAXBException {
+        // use JAXB to unmarshall the destination object,
+        Unmarshaller unmarshaller = createUnmarshaller();
+        if (unmarshaller != null) {
+            Destination destination = unmarshaller.unmarshal(reader, Destination.class).getValue();
+            if (destination != null) {
+                lookup.put(destination.getId(), destination);
             }
-        } catch (JAXBException e) {
-            e.printStackTrace();
         }
     }
 
@@ -58,8 +57,7 @@ public class DestinationStaxStreamParser extends AbstractStaxStreamParser<Destin
     }
 
     @Override
-    protected void handleEndElement(XMLStreamReader reader) {
-        System.out.println();
+    protected void handleEndElement(XMLStreamReader reader) throws ParseException {
     }
 
 }
