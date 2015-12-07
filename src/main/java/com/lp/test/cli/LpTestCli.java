@@ -13,9 +13,9 @@ public class LpTestCli {
 
         Parameters parameters = parseArgs(args);
 
-        Generator generator = new Generator();
+        BatchProcessor generator = new BatchProcessor();
         try {
-            generator.generate(parameters);
+            generator.run(parameters);
         } catch (Exception e) {
             Util.printf("Error generating output: %s", e.getMessage());
         }
