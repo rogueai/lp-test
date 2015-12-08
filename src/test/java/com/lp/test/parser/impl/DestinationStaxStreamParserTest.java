@@ -17,11 +17,15 @@ import java.util.Map;
 public class DestinationStaxStreamParserTest {
 
     @Rule
+    public final ExpectedException exception = ExpectedException.none();
+    @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
+    /**
+     * Test that parsing an empty xml throws a {@link ParseException}
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_empty() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
@@ -30,6 +34,11 @@ public class DestinationStaxStreamParserTest {
         parser.parse(is);
     }
 
+    /**
+     * Test that parsing a malformed xml throws a {@link ParseException}. The malformed xml used has a missing end tag.
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_malformed() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
@@ -38,6 +47,11 @@ public class DestinationStaxStreamParserTest {
         parser.parse(is);
     }
 
+    /**
+     * Test parsing the provided xml
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_original() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
@@ -47,6 +61,11 @@ public class DestinationStaxStreamParserTest {
         Assert.assertEquals(24, result.size());
     }
 
+    /**
+     * Test with a minimal xml
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_min() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
@@ -63,6 +82,16 @@ public class DestinationStaxStreamParserTest {
         Assert.assertNotNull(destination.getIntroductory().getIntroduction().getOverview());
     }
 
+    /**
+     * Test parsing an inline xml with no spaces between tags, e.g.:
+     * <pre>
+     *  {@code
+     *  <destinations><destination>...</destination></destinations>
+     *  }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_inline() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
@@ -72,6 +101,24 @@ public class DestinationStaxStreamParserTest {
         Assert.assertEquals(2, result.size());
     }
 
+    /**
+     * Test parsing an inline xml with comments, e.g.:
+     * <pre>
+     *  {@code
+     * <destinations>
+     * ...
+     * </destination>
+     *
+     * <!-- comment -->
+     *
+     * <destination atlas_id="2" asset_id="2" title="Asia" title-ascii="Asia">
+     * ...
+     * </destinations>
+     *  }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_comments() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
@@ -81,6 +128,16 @@ public class DestinationStaxStreamParserTest {
         Assert.assertEquals(2, result.size());
     }
 
+    /**
+     * Test parsing an uppercase xml, e.g.:
+     * <pre>
+     *  {@code
+     * <DESTINATIONS><DESTINATION>...</DESTINATION></DESTINATIONS>
+     *  }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_uppercase() throws Exception {
         DestinationStaxStreamParser parser = new DestinationStaxStreamParser();

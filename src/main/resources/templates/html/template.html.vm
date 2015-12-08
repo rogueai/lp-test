@@ -53,7 +53,10 @@
                 </div>
                 <div class="content">
                     <div class="inner">
-                        $destination.getIntroductory().getIntroduction().getOverview().replaceAll("(\r\n|\n)", "<br />")
+                        #if($destination && $destination.getIntroductory() && $destination.getIntroductory().getIntroduction())
+                        #set($overview = $destination.getIntroductory().getIntroduction().getOverview())
+                        $overview.replaceAll("(\r\n|\n)", "<br />")
+                        #end
                     </div>
                 </div>
             </div>

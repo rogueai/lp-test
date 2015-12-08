@@ -32,7 +32,7 @@ public class FilenameUtils {
      * @return the normalized file name, or "" if blank
      */
     public static String normalize(String fileName) {
-        if (!StringUtils.trimToNull(fileName).isEmpty()) {
+        if (!StringUtils.trimToEmpty(fileName).isEmpty()) {
             return fileName.replaceAll("[^a-zA-Z0-9.-]", "_").toLowerCase();
         }
         return "";
