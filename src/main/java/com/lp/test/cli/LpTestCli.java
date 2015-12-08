@@ -46,7 +46,7 @@ public class LpTestCli {
         }
     }
 
-    private static Parameters parseArgs(String[] args) {
+    protected static Parameters parseArgs(String[] args) {
         Parameters parameters = new Parameters();
         JCommander commander = new JCommander(parameters);
         commander.setProgramName(PROGRAM_NAME);

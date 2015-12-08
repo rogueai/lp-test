@@ -13,7 +13,6 @@ import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
@@ -139,7 +138,7 @@ public class HtmlGeneratorTest {
         Assert.assertEquals(expected, actual);
     }
 
-    private String getHtml(String fileName) throws IOException {
+    private String getHtml(String fileName) throws Exception {
         InputStream is = getClass().getResourceAsStream(fileName);
         return IOUtils.toString(is);
     }
