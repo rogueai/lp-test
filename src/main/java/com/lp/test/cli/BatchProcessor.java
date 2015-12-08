@@ -36,6 +36,11 @@ public class BatchProcessor {
     private static final Logger LOG = LoggerFactory.getLogger(BatchProcessor.class);
 
     public void run(Parameters parameters) {
+        if (parameters == null) {
+            LOG.error("Cannot process files: no parameters provided");
+            System.exit(1);
+        }
+
         String taxonomyFile = parameters.getTaxonomyFile();
         String destinationsFile = parameters.getDestinationsFile();
         LOG.info("Running using Taxonomy file: {}, Destinations file: {}", taxonomyFile, destinationsFile);

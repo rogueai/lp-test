@@ -62,7 +62,7 @@ public class DestinationStaxStreamParserTest {
     }
 
     /**
-     * Test with a minimal xml
+     * Test that parsing a minimal destinations xml is successful
      *
      * @throws Exception
      */
@@ -83,7 +83,7 @@ public class DestinationStaxStreamParserTest {
     }
 
     /**
-     * Test parsing an inline xml with no spaces between tags, e.g.:
+     * Test parsing an inline xml with no spaces, e.g.:
      * <pre>
      *  {@code
      *  <destinations><destination>...</destination></destinations>
