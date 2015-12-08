@@ -18,21 +18,22 @@ public class FilenameUtils {
      * <li>.</li>
      * <li>_</li>
      * </ul>
-     * Invalid characters are removed, and the resulting name is then returned as lowercase.
+     * Invalid characters are replaced with underscore, and the resulting name is then returned as lowercase.
      * Examples:
      * <pre>
      * null                -->   ""
      * "     "             -->   ""
-     * "abc/def"           -->   "abcdef"
-     * "ABC DEF"           -->   "abcdef"
-     * "ABC DEF"           -->   "abcdef"
+     * "abc/def"           -->   "abc_def"
+     * "ABC DEF"           -->   "abc_def"
+     * "ABC DEF"           -->   "abc_def"
      * </pre>
      *
      * @param fileName the file name to normalize
      * @return the normalized file name, or "" if blank
      */
     public static String normalize(String fileName) {
-        if (!StringUtils.trimToEmpty(fileName).isEmpty()) {
+        fileName = StringUtils.trimToEmpty(fileName);
+        if (!fileName.isEmpty()) {
             return fileName.replaceAll("[^a-zA-Z0-9.-]", "_").toLowerCase();
         }
         return "";
