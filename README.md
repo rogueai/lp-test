@@ -8,7 +8,7 @@ In order to compile and build the project, the following are required:
 * Maven 3.2.2
 
 ### Project structure
-'''
+```
 lp-test/
 |-- pom.xml                 --> Maven pom descriptor, used for building the project
 |-- README.md
@@ -17,7 +17,7 @@ lp-test/
 |                               and static HTML files used at runtime
 |-- src/test/java           --> JUnit Test source files
 `-- src/test/resources      --> JUnit Test resource files such as mock input XMLs and expected HTML outputs
-'''
+```
 
 ### Build
 The project can be built from the project's root directory with:
