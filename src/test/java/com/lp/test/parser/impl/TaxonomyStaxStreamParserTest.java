@@ -26,6 +26,7 @@ public class TaxonomyStaxStreamParserTest {
     public void test_parse_min() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-min.xml");
 
+        Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertTrue(result.containsKey(355064));
         Node node = result.get(355064);
@@ -37,6 +38,7 @@ public class TaxonomyStaxStreamParserTest {
     public void test_parse_multiline() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-multiline.xml");
 
+        Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertTrue(result.containsKey(1));
         Node node = result.get(1);
@@ -47,6 +49,7 @@ public class TaxonomyStaxStreamParserTest {
     public void test_parse_comments_1() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-comments.xml");
 
+        Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertTrue(result.containsKey(1));
         Node node = result.get(1);
@@ -57,6 +60,7 @@ public class TaxonomyStaxStreamParserTest {
     public void test_parse_comments_2() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-comments-2.xml");
 
+        Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertTrue(result.containsKey(1));
         Node node = result.get(1);
@@ -67,7 +71,16 @@ public class TaxonomyStaxStreamParserTest {
     public void test_parse_inline() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-inline.xml");
 
+        Assert.assertNotNull(result);
         Assert.assertEquals(2, result.size());
+    }
+
+    @Test
+    public void test_parse_uppercase() throws Exception {
+        Map<Integer, Node> result = parse("/xml/taxonomy-uppercase.xml");
+
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
     }
 
     private Map<Integer, Node> parse(String filePath) throws Exception {

@@ -94,4 +94,5 @@ abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> 
     protected abstract void handleEndElement(XMLStreamReader reader) throws ParseException;
 
     protected abstract void handleStartElement(XMLStreamReader reader) throws ParseException;
+
 }

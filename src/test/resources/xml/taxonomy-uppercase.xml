@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TAXONOMIES>
+    <TAXONOMY>
+        <TAXONOMY_NAME>World</TAXONOMY_NAME>
+        <NODE ATLAS_NODE_ID="1" ETHYL_CONTENT_OBJECT_ID="82534" GEO_ID="355064">
+            <NODE_NAME>Africa</NODE_NAME>
+        </NODE>
+    </TAXONOMY>
+</TAXONOMIES>

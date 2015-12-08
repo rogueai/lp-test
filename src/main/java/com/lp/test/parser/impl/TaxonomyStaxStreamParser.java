@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -51,7 +52,7 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
                     createNode(ROOT_NODE_ID);
                     break;
                 case ELEMENT__NODE:
-                    int id = Integer.parseInt(reader.getAttributeValue("", ATTRIBUTE__ATLAS_NODE_ID));
+                    int id = Integer.parseInt(getAttributeValue(reader, ATTRIBUTE__ATLAS_NODE_ID));
                     createNode(id);
                     break;
                 case ELEMENT__TAXONOMY_NAME:
@@ -71,6 +72,7 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
     protected void handleEndElement(XMLStreamReader reader) throws ParseException {
         String name = reader.getLocalName();
         if (name != null) {
+            name = name.toLowerCase();
             switch (name) {
                 case "node":
                     // set child relationship
@@ -123,6 +125,10 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
         return "";
     }
 
+    /**
+     * Creates a new {@link Node} and add it to the stack.
+     * @param nodeId
+     */
     private void createNode(int nodeId) {
         Node node = new Node();
         node.setId(nodeId);
@@ -133,6 +139,32 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
             lookup.put(nodeId, node);
         }
         stack.push(node);
+    }
+
+    /**
+     * Retrieve the attribute value, ignoring case.
+     * <pre>
+     * {@code
+     * attributeName = "name"
+     *
+     * <foo name="Bar">     --> "Bar"
+     * <foo NAME="Bar">     --> "Bar"
+     * <foo nAmE="Bar">     --> "Bar"
+     * }
+     * </pre>
+     *
+     * @param reader the reader
+     * @param attributeName the attribute name to retrieve the value from
+     * @return the attribute value, or "" if not found
+     */
+    private String getAttributeValue(XMLStreamReader reader, String attributeName) {
+        for (int i = 0; i < reader.getAttributeCount(); i++) {
+            QName name = reader.getAttributeName(i);
+            if (StringUtils.equalsIgnoreCase(name.toString(), attributeName)) {
+                return reader.getAttributeValue(i).toString();
+            }
+        }
+        return "";
     }
 
 }

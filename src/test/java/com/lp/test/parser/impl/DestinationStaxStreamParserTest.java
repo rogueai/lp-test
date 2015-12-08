@@ -81,4 +81,13 @@ public class DestinationStaxStreamParserTest {
         Assert.assertEquals(2, result.size());
     }
 
+    @Test
+    public void test_parse_uppercase() throws Exception {
+        DestinationStaxStreamParser parser = new DestinationStaxStreamParser();
+        InputStream is = getClass().getResourceAsStream("/xml/destinations-uppercase.xml");
+        Map<Integer, Destination> result = parser.parse(is);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+    }
+
 }

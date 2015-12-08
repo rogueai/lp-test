@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <DESTINATIONS>
+    <DESTINATION ATLAS_ID="1" ASSET_ID="1" TITLE="Africa" TITLE-ASCII="Africa">
+        <INTRODUCTORY>
+            <INTRODUCTION>
+                <OVERVIEW><![CDATA[ Overview 1 ]]></OVERVIEW>
+            </INTRODUCTION>
+        </INTRODUCTORY>
+    </DESTINATION>
+</DESTINATIONS>
