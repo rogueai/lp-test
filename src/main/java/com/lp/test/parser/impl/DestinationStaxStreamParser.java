@@ -11,6 +11,10 @@ import javax.xml.stream.XMLStreamReader;
 
 /**
  * Destinations parser uses StAX Cursor APIs to parse the destinations xml.
+ * <p/>
+ * JAXB is used to deserialize the final Destination object, since the underlying implementation uses
+ * the same StAX cursor approach and therefore it's not critically impacting performance, and enables
+ * for easy deserialization of JAXB-annotated objects.
  *
  * @author Massimo Zugno <d3k41n@gmail.com>
  */

@@ -3,6 +3,8 @@ package com.lp.test.parser.impl;
 import com.lp.test.model.Node;
 import com.lp.test.parser.exception.ParseException;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -18,6 +20,7 @@ import java.util.Stack;
  */
 public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TaxonomyStaxStreamParser.class);
 
     private static final String ELEMENT__TAXONOMY = "taxonomy";
     private static final String ELEMENT__TAXONOMY_NAME = "taxonomy_name";
@@ -47,15 +50,15 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
                 case ELEMENT__TAXONOMY:
                     createNode(ROOT_NODE_ID);
                     break;
-                case ELEMENT__TAXONOMY_NAME:
-                    stack.peek().setName(parseNodeText(reader));
-                    break;
                 case ELEMENT__NODE:
                     int id = Integer.parseInt(reader.getAttributeValue("", ATTRIBUTE__ATLAS_NODE_ID));
                     createNode(id);
                     break;
+                case ELEMENT__TAXONOMY_NAME:
                 case ELEMENT__NODE_NAME:
-                    stack.peek().setName(parseNodeText(reader));
+                    if (!stack.isEmpty()) {
+                        stack.peek().setName(parseNodeText(reader));
+                    }
                     break;
                 default:
                     break;
@@ -85,9 +88,23 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
     /**
      * Read CHARACTERS events from the reader, until it reaches the next END_ELEMENT tag. Any element other than CHARACTERS
      * is skipped, such as: COMMENT, SPACE.
+     * <pre>
+     * {@code
+     * <node_name>Africa</node_name>        --> "Africa"
+     * <node_name>  Africa  </node_name>    --> "Africa"
+     * <node_name>                          --> "Africa"
+     *     Africa
+     * </node_name>
+     * <node_name>                          --> "Africa"
+     *     <!-- comment -->
+     *     Africa
+     *     <!-- comment -->
+     * </node_name>
+     * }
+     * </pre>
      *
-     * @param reader The stream reader.
-     * @return A String representing text element's text
+     * @param reader the stream reader.
+     * @return a String representing the element's text
      */
     private String parseNodeText(XMLStreamReader reader) {
         try {
@@ -101,7 +118,7 @@ public class TaxonomyStaxStreamParser extends AbstractStaxStreamParser<Node> {
 
             return StringUtils.trimToEmpty(text.toString());
         } catch (XMLStreamException e) {
-            e.printStackTrace();
+            LOG.error("Error parsing node text", e);
         }
         return "";
     }

@@ -1,12 +1,6 @@
 package com.lp.test.cli;
 
-import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.Parameter;
-import com.beust.jcommander.ParameterException;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * @author Massimo Zugno <d3k41n@gmail.com>

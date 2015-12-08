@@ -4,6 +4,8 @@ import com.lp.test.model.Element;
 import com.lp.test.parser.Parser;
 import com.lp.test.parser.exception.ParseException;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -12,17 +14,19 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract Parser implementation that uses StAX stream as an internal parser.
  * The StAX stream parser allows to parse the XML document without fully loading it in memory, thus improving
  * performance.
- * The Stream parser has been chosen in favour of the Event parser to guarantee the best performance.
+ * The Cursor API has been chosen in favour of the Event API to ensure optimal performance.
  *
  * @author Massimo Zugno <d3k41n@gmail.com>
  */
 abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractStaxStreamParser.class);
 
     protected Map<Integer, T> lookup = new HashMap<>();
 
@@ -31,14 +35,15 @@ abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> 
      * <p/>
      * Note that the InputStream is closed after parsing.
      *
-     * @param inputStream The InputStream to parse.
-     * @return
+     * @param inputStream the InputStream to parse.
+     * @return the lookup table associating every parsed {@link Element} to its id
      * @throws ParseException
      */
     @Override
     public Map<Integer, T> parse(InputStream inputStream) throws ParseException {
-
         initParser();
+
+        long start = System.nanoTime();
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = null;
@@ -47,7 +52,6 @@ abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> 
             reader = inputFactory.createXMLStreamReader(inputStream);
             while (reader.hasNext()) {
                 int event = reader.next();
-
                 switch (event) {
                     case XMLStreamConstants.START_ELEMENT:
                         handleStartElement(reader);
@@ -67,10 +71,15 @@ abstract class AbstractStaxStreamParser<T extends Element> implements Parser<T> 
                     reader.close();
                 }
             } catch (XMLStreamException e) {
-                e.printStackTrace();
+                LOG.error("Failed to close XMLStreamReader", e);
             }
             IOUtils.closeQuietly(inputStream);
         }
+
+        // performance logging
+        long elapsed = System.nanoTime() - start;
+        LOG.debug("Done parsing in {}ms", TimeUnit.NANOSECONDS.toMillis(elapsed));
+
         return lookup;
     }
 

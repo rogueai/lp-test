@@ -16,9 +16,9 @@ public interface Parser<T extends Element> {
     /**
      * Parse the provided {@link InputStream} and returns a lookup table.
      *
-     * @param inputStream The InputStream to parse.
-     * @return
-     * @throws ParseException
+     * @param inputStream the InputStream to parse.
+     * @return the lookup table
+     * @throws ParseException if an error occurs during parsing
      */
     Map<Integer, T> parse(InputStream inputStream) throws ParseException;
 
