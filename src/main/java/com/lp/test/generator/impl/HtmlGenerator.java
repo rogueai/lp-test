@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * {@link Generator} implementation that generates HTML files based on a template.
@@ -51,24 +52,40 @@ public class HtmlGenerator implements Generator {
 
     @Override
     public void generate(Node node, Destination destination) {
+        if (StringUtils.isBlank(outputFolder)) {
+            LOG.error("Cannot perform generation: missing output folder");
+            return;
+        }
+        if (node == null || destination == null) {
+            LOG.error("Cannot perform generation: Node and Destination are required");
+            return;
+        }
         // retrieve template context
         VelocityContext context = getTemplateContext(outputFolder, node, destination);
 
         String fileName = FilenameUtils.normalize(node.getName());
         if (StringUtils.isBlank(fileName)) {
-            LOG.error("Cannot generate a valid file name for destination: {}", node.getName());
+            LOG.error("Cannot generate a valid file name from Node name: {}", node.getName());
             return;
         }
         fileName = fileName + ".html";
         try {
             File outputFile = new File(outputFolder, fileName);
             LOG.debug("Generating HTML file: {}", outputFile.getAbsolutePath());
-            FileWriter writer = new FileWriter(outputFile);
-            template.merge(context, writer);
+            Writer writer = getWriter(outputFile);
+            getTemplate().merge(context, writer);
             writer.close();
         } catch (IOException e) {
             LOG.error("Error generating HTML file: {}", fileName, e);
         }
+    }
+
+    private Template getTemplate() {
+        return template;
+    }
+
+    Writer getWriter(File outputFile) throws IOException {
+        return new FileWriter(outputFile);
     }
 
     /**

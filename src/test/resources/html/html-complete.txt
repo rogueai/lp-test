@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Lonely Planet</title>
+    <link href="static/all.css" media="screen" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div id="container">
+    <div id="header">
+        <div id="logo"></div>
+        <h1>Lonely Planet: TestDestination</h1>
+    </div>
+
+    <div id="wrapper">
+        <div id="sidebar">
+            <div class="block">
+                <h3>Navigation</h3>
+
+                <div class="content">
+                    <div class="inner">
+                                                                            <ul>
+                                <li>
+                                                                        <a href="./testnodeparent.html">TestNodeParent</a>
+                                </li>
+                            </ul>
+                                                <b>TestNode</b>
+                        <ul>
+                                                            <li>
+                                                                        <a href="./testnodechild.html">TestNodeChild</a>
+                                </li>
+                                                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="main">
+            <div class="block">
+                <div class="secondary-navigation">
+                    <ul>
+                        <li class="first"><a href="#">TestDestination</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div class="content">
+                    <div class="inner">
+                                                TestOverview
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

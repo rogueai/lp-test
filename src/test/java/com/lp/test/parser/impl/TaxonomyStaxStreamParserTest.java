@@ -16,12 +16,22 @@ public class TaxonomyStaxStreamParserTest {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
+    /**
+     * Test parsing the provided xml
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_original() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-orig.xml");
         Assert.assertEquals(24, result.size());
     }
 
+    /**
+     * Test with a minimal xml
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_min() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-min.xml");
@@ -34,6 +44,20 @@ public class TaxonomyStaxStreamParserTest {
         Assert.assertEquals("Africa", node.getName());
     }
 
+    /**
+     * Test parsing multiline text block containing spaces, e.g.:
+     * <pre>
+     * {@code
+     * <node_name>
+     *
+     * Africa
+     *
+     * </node_name>
+     * }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_multiline() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-multiline.xml");
@@ -45,6 +69,20 @@ public class TaxonomyStaxStreamParserTest {
         Assert.assertEquals("Africa", node.getName());
     }
 
+    /**
+     * Test parsing multiline text block containing comments, e.g.:
+     * <pre>
+     * {@code
+     * <node_name>
+     * <!-- comment -->
+     * Africa
+     * <!-- comment -->
+     * </node_name>
+     * }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_comments_1() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-comments.xml");
@@ -56,6 +94,18 @@ public class TaxonomyStaxStreamParserTest {
         Assert.assertEquals("Africa", node.getName());
     }
 
+    /**
+     * Test parsing text block containing inline comments, e.g.:
+     * <pre>
+     * {@code
+     * <node_name>
+     * South <!-- comment -->Africa
+     * </node_name>
+     * }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_comments_2() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-comments-2.xml");
@@ -67,6 +117,16 @@ public class TaxonomyStaxStreamParserTest {
         Assert.assertEquals("South Africa", node.getName());
     }
 
+    /**
+     * Test parsing an inline xml with no spaces, e.g.:
+     * <pre>
+     *  {@code
+     *  <taxonomies><taxonomy><taxonomy_name>World</taxonomy_name>...
+     *  }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_inline() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-inline.xml");
@@ -75,6 +135,16 @@ public class TaxonomyStaxStreamParserTest {
         Assert.assertEquals(2, result.size());
     }
 
+    /**
+     * Test parsing an uppercase xml, e.g.:
+     * <pre>
+     *  {@code
+     * <TAXONOMIES><TAXONOMY><NODE>...</NODE></TAXONOMY></TAXONOMIES>
+     *  }
+     * </pre>
+     *
+     * @throws Exception
+     */
     @Test
     public void test_parse_uppercase() throws Exception {
         Map<Integer, Node> result = parse("/xml/taxonomy-uppercase.xml");
